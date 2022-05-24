@@ -7,7 +7,7 @@ app.MapPost("/reset", () =>
 {
     Operations.Accounts.Clear();
     Operations.Transactions.Clear();
-    return Results.Ok();
+    return "OK";
 });
 
 app.MapGet("/balance", (int account_id) =>

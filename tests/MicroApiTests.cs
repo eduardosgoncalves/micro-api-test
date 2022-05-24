@@ -4,18 +4,24 @@ namespace MicroApiTest.Tests;
 
 public class MicroApiTests
 {
+    const HttpStatusCode EXPECTED_OK_RESULT = HttpStatusCode.OK;
+    const HttpStatusCode EXPECTED_NOT_FOUND_RESULT = HttpStatusCode.NotFound;
+
     [Fact]
     public async Task PostResetShouldReturnOK()
     {
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "OK";
 
         //Act
         var response = await client.PostAsync("/reset", null);
+        var responseStr = response.Content.ReadAsStringAsync().Result;
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, responseStr);
     }
 
     [Fact]
@@ -29,7 +35,7 @@ public class MicroApiTests
         var response = await client.GetAsync("/balance?account_id=1234");
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.Equal(EXPECTED_NOT_FOUND_RESULT, response.StatusCode);
     }
 
     [Fact]
@@ -38,6 +44,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "{\"destination\":{\"id\":\"100\",\"balance\":10}}";
         await client.PostAsync("/reset", null);
 
         //Act
@@ -48,12 +55,11 @@ public class MicroApiTests
             amount = 10
         });
 
-        var responseStr = "{\"destination\":{\"id\":\"100\",\"balance\":10}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
-        Assert.Equal(content, responseStr);
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, content);
     }
 
     [Fact]
@@ -62,6 +68,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "{\"destination\":{\"id\":\"100\",\"balance\":20}}";
         await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
@@ -78,12 +85,11 @@ public class MicroApiTests
             amount = 10
         });
 
-        var responseStr = "{\"destination\":{\"id\":\"100\",\"balance\":20}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
-        Assert.Equal(content, responseStr);
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, content);
     }
 
     [Fact]
@@ -92,6 +98,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "20";
         await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
@@ -110,8 +117,8 @@ public class MicroApiTests
         var response = await client.GetAsync("/balance?account_id=100");
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
-        Assert.Equal(response.Content.ReadAsStringAsync().Result, "20");
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, response.Content.ReadAsStringAsync().Result);
     }
 
     [Fact]
@@ -130,7 +137,7 @@ public class MicroApiTests
         });
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.Equal(EXPECTED_NOT_FOUND_RESULT, response.StatusCode);
     }
 
     [Fact]
@@ -139,6 +146,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "{\"origin\":{\"id\":\"100\",\"balance\":15}}";
         await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
@@ -161,12 +169,11 @@ public class MicroApiTests
             amount = 5
         });
 
-        var responseStr = "{\"origin\":{\"id\":\"100\",\"balance\":15}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
-        Assert.Equal(content, responseStr);
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, content);
     }
 
     [Fact]
@@ -186,7 +193,7 @@ public class MicroApiTests
         });
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.NotFound);
+        Assert.Equal(EXPECTED_NOT_FOUND_RESULT, response.StatusCode);
     }
 
 
@@ -196,6 +203,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        var expected = "{\"origin\":{\"id\":\"100\",\"balance\":0},\"destination\":{\"id\":\"300\",\"balance\":15}}";
         await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
@@ -225,12 +233,11 @@ public class MicroApiTests
             amount = 15
         });
 
-        var responseStr = "{\"origin\":{\"id\":\"100\",\"balance\":0},\"destination\":{\"id\":\"300\",\"balance\":15}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
-        Assert.Equal(response.StatusCode, HttpStatusCode.OK);
-        Assert.Equal(content, responseStr);
+        Assert.Equal(EXPECTED_OK_RESULT, response.StatusCode);
+        Assert.Equal(expected, content);
     }
 
 }

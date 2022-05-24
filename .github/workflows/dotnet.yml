@@ -8,7 +8,7 @@ on:
 
 env:
   app-name: "MicroApiTest"
-  rg-name: "cloud-shell-storage-eastus"
+  rg-name: "appsvc_windows_centralus"
 
 jobs:
   build:

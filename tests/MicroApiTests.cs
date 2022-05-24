@@ -38,6 +38,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
 
         //Act
         var response = await client.PostAsJsonAsync("/event", new
@@ -61,6 +62,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
             type = "deposit",
@@ -90,6 +92,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
             type = "deposit",
@@ -136,6 +139,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
             type = "deposit",
@@ -192,6 +196,7 @@ public class MicroApiTests
         //Arrange
         await using var application = new MicroApiApplication();
         var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
         await client.PostAsJsonAsync("/event", new
         {
             type = "deposit",

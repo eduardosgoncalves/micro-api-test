@@ -48,7 +48,7 @@ public class MicroApiTests
             amount = 10
         });
 
-        var responseStr = "{\"destination\":{\"id\":100,\"balance\":10}}";
+        var responseStr = "{\"destination\":{\"id\":\"100\",\"balance\":10}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
@@ -78,7 +78,7 @@ public class MicroApiTests
             amount = 10
         });
 
-        var responseStr = "{\"destination\":{\"id\":100,\"balance\":20}}";
+        var responseStr = "{\"destination\":{\"id\":\"100\",\"balance\":20}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
@@ -161,7 +161,7 @@ public class MicroApiTests
             amount = 5
         });
 
-        var responseStr = "{\"origin\":{\"id\":100,\"balance\":15}}";
+        var responseStr = "{\"origin\":{\"id\":\"100\",\"balance\":15}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert
@@ -225,7 +225,7 @@ public class MicroApiTests
             amount = 15
         });
 
-        var responseStr = "{\"origin\":{\"id\":100,\"balance\":0},\"destination\":{\"id\":300,\"balance\":15}}";
+        var responseStr = "{\"origin\":{\"id\":\"100\",\"balance\":0},\"destination\":{\"id\":\"300\",\"balance\":15}}";
         var content = await response.Content.ReadAsStringAsync();
 
         //Assert

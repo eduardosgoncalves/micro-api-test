@@ -27,7 +27,7 @@ public class Operations
         {
             destination = new
             {
-                id = accountId,
+                id = $"{accountId}",
                 balance = balance
             }
         });
@@ -51,7 +51,7 @@ public class Operations
         {
             origin = new
             {
-                id = accountId,
+                id = $"{accountId}",
                 balance = balance
             }
         });
@@ -84,12 +84,12 @@ public class Operations
         {
             origin = new
             {
-                id = originId,
+                id = $"{originId}",
                 balance = originBalance
             },
             destination = new
             {
-                id = destinationId,
+                id = $"{destinationId}",
                 balance = destinationBalance
             }
         });

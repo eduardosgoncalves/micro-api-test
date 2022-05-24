@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   app-name: "MicroApiTest"
@@ -12,9 +12,7 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -27,27 +25,23 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
-
   deploy_staging:
     needs: build
     runs-on: ubuntu-latest
-
     environment:
       name: PRE-PROD
       url: ${{ steps.deploywebapp.outputs.webapp-url }}
-
     steps:
     - name: Download a Build Artifact
-      uses: actions/download-artifact@v3
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v3
       with:
         name: website
         path: website
-
     - name: Login via Azure CLI
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
     - name: Deploy web app
       id: deploywebapp
       uses: azure/webapps-deploy@v2
@@ -55,6 +49,5 @@ jobs:
         app-name: ${{ env.app-name }}
         slot-name: staging
         package: website
-
     - name: az cli logout
       run: az logout

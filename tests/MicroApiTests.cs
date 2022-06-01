@@ -240,4 +240,37 @@ public class MicroApiTests
         Assert.Equal(expected, content);
     }
 
+    [Fact]
+    public async Task FailToWithdrawOverMaximumLimitShouldReturnNotFound()
+    {
+        //Arrange
+        await using var application = new MicroApiApplication();
+        var client = application.CreateClient();
+        await client.PostAsync("/reset", null);
+        await client.PostAsJsonAsync("/event", new
+        {
+            type = "deposit",
+            destination = 600,
+            amount = 100
+        });
+        await client.PostAsJsonAsync("/event", new
+        {
+            type = "withdraw",
+            origin = 600,
+            amount = 200
+        });
+
+        //Act
+        var response = await client.PostAsJsonAsync("/event", new
+        {
+            type = "withdraw",
+            origin = 600,
+            amount = 1
+        });
+
+        var content = await response.Content.ReadAsStringAsync();
+
+        //Assert
+        Assert.Equal(EXPECTED_NOT_FOUND_RESULT, response.StatusCode);
+    }
 }

@@ -8,6 +8,7 @@ public class Operations
 {
     public static HashSet<Account> Accounts = new HashSet<Account>();
     public static HashSet<Transaction> Transactions = new HashSet<Transaction>();
+    public static int MaxLimit = -100;
 
     public static IResult Deposit(Event model)
     {
@@ -42,6 +43,13 @@ public class Operations
         {
             return Results.NotFound(0);
         }
+
+        accountId = Accounts.FirstOrDefault(a => a.AccountId == model.Origin)?.AccountId;
+        balance = GetBalance(accountId);
+
+        if (balance - model.Amount < MaxLimit)
+            return Results.NotFound(0);
+
         Transactions.Add(new Transaction(DateTime.Now, model.Type, model.Origin, null, model.Amount));
 
         accountId = Accounts.FirstOrDefault(a => a.AccountId == model.Origin)?.AccountId;
